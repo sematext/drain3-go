@@ -1,0 +1,15 @@
+[package]
+name = "drain3-go-reference"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "Apache-2.0"
+
+[dependencies]
+drain3 = { git = "https://github.com/akshatagarwl/drain3", rev = "9d5e8e8cad620bc2b83064e8c67e29affccf571c", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+codegen-units = 1
+lto = "fat"

@@ -1,0 +1,16 @@
+drain3-go
+
+Go port and modifications of drain3, a Rust Drain implementation.
+Upstream: https://github.com/akshatagarwl/drain3
+Revision: 9d5e8e8cad620bc2b83064e8c67e29affccf571c
+Copyright 2026 Akshat Agarwal
+Licensed under the Apache License, Version 2.0.
+
+The Go port changes model ownership, concurrency, storage, bounds, and the public
+API. It adds permanent freezing and explicit resource errors instead of LRU
+eviction. Regex and Unicode semantics use the Go standard library.
+
+The Rust upstream identifies logpai/Drain3 as the algorithm and test-compatibility
+reference. Its MIT attribution is retained in third_party/logpai-Drain3-LICENSE.txt:
+Copyright (c) 2020-2022 International Business Machines
+and the Drain3 project contributors.
