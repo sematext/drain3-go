@@ -22,4 +22,6 @@ The Rust implementation depends on `regex`, `rustc-hash`, and `smallvec`, with o
 
 The separate Go benchmark module depends on MIT-licensed `github.com/kloudmate/drain3` at `bc42b50af108a7a7ce926a1534d78c9cf9373eed`. It calls that library as a comparator and does not copy its implementation. Its notice is retained in `third_party/kloudmate-drain3-LICENSE.txt`.
 
+The optional local documentation renderer in `docs/visuals` uses tldraw SDK 5.6.0 under its separate development/production license, not Apache-2.0. The full SDK license is retained in `third_party/tldraw-LICENSE.md`. Its npm lockfile pins React, Vite, Playwright, and tldraw assets; those dependencies are not part of the Go module. Published drawings contain only newly invented messages and our diagram shapes. No editor bundle, font binaries, or SDK source is vendored or deployed.
+
 This inventory records source origin and retained notices. It is not a legal opinion about every downstream distribution.

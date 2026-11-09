@@ -20,6 +20,10 @@ The command compares all training steps, final clusters, exact matches, and extr
 
 To regenerate the checked-in expectations after a deliberate reference change, add `--write-golden testdata/rust-golden.jsonl`. Expectations come from Rust, not from the Go implementation. Update the pinned revision and tests together when changing references.
 
+## Measured results
+
+The README uses [clean-clone synthetic results with source/binary provenance and raw runs](../docs/benchmarks/README.md). The settings and measurement boundaries below apply; they do not establish end-to-end service memory safety.
+
 ## Compare streaming latency and peak RSS
 
 Build the separate Go comparison module with Go 1.25.11:
@@ -46,6 +50,6 @@ Timing includes buffered file reads and framing. It excludes shared preprocessin
 
 ## Scope
 
-Parity is self-verification. It is not an independent review or proof for every input. It excludes Rust LRU eviction, persistence, Unicode-version differences, and regex constructs without equivalent Go semantics. Those differences are listed in the root README.
+Parity is self-verification. It is not an independent review or proof for every input. It excludes Rust LRU eviction, persistence, Unicode-version differences, and regex constructs without equivalent Go semantics. Those differences are summarized in the root README and detailed in [the API reference](../docs/api.md#compatibility).
 
 Do not put customer corpora, raw templates, or private benchmark outputs in this repository. Keep comparison inputs and artifacts in a separate private directory.

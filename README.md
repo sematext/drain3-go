@@ -1,75 +1,55 @@
 # drain3-go
 
-A streaming Go port of [Akshat Agarwal's Apache-2.0 Rust Drain implementation](https://github.com/akshatagarwl/drain3/tree/9d5e8e8cad620bc2b83064e8c67e29affccf571c). The Go library has no third-party dependencies. Its API is experimental.
+Streaming Drain log templates in Go. **Go 1.23+ · zero runtime dependencies · experimental API.**
 
-The miner learns templates in input order. `Freeze` ends training and publishes a read-only matcher without copying the tree. Matching never changes cluster counts or templates.
+## Measured results
 
-```go
-cfg := drain3.DefaultConfig()
-cfg.MaxClusters = 1000
-cfg.MaxLineBytes = 4096
-cfg.MaxTokens = 256
-miner, err := drain3.New(cfg)
-if err != nil {
-	return err
-}
-for _, line := range []string{"user alice signed in", "user bob signed in"} {
-	if _, err := miner.Train(line); err != nil {
-		return err
-	}
-}
-matcher := miner.Freeze()
-cluster, found, err := matcher.Match("user carol signed in")
-// cluster.Template == "user <*> signed in", found == true, err == nil.
-```
+80,000 invented lines per dataset; median of five isolated process runs.
 
-Import the package as `drain3 "github.com/sematext/drain3-go"`. Go 1.23 or later is required.
+| Input | Parser | Train ms | Match ms | Peak RSS MiB |
+|---|---|---:|---:|---:|
+| Short | **drain3-go** | 24.87 | 21.01 | 11.14 |
+| Short | Kloudmate | 26.69 | 22.59 | 11.09 |
+| Short | Rust reference | 15.93 | 12.47 | 3.41 |
+| 2 KiB/line | **drain3-go** | 408.28 | 396.71 | 11.23 |
+| 2 KiB/line | Kloudmate | 304.37 | 300.59 | 11.17 |
+| 2 KiB/line | Rust reference | 89.32 | 86.03 | 3.44 |
 
-## API reference
+macOS/arm64, Go 1.25.11, Rust 1.97.1. Includes streaming I/O; **excludes preprocessing and retained input**. Not a general speedup or service-memory claim—the Go port is slower than Kloudmate on the long input here. [Clean-build provenance, settings, raw runs, reproduction →](docs/benchmarks/README.md)
 
-- `Train` returns a cluster snapshot and `Created`, `TemplateChanged`, or `Unchanged`.
-- IDs start at one. `Clusters` returns snapshots in ID order. Returned values do not change after further training.
-- `Match` requires an exact match of every non-wildcard token and searches only the routed leaf.
-- `MatchWith` and `Parse` accept `Never`, `Fallback`, or `Always`. `Fallback` scans all same-length clusters only after a tree miss. `Always` searches those clusters in tree insertion order.
-- `Parse` returns original parameter values. `MaskIndex == -1` identifies a generalized wildcard. Other indices identify masking instructions.
-- `Tokenize` applies masks, literal delimiters, and whitespace splitting. Its strings may reference the input. The learned model clones retained tokens and tree keys.
-- A miner serializes its methods. Concurrent callers must establish training order themselves when determinism matters. A miner must not be copied after use.
-- `Freeze` is permanent and idempotent. Further `Train` calls return `ErrFrozen`. Matcher methods can run concurrently without locks.
+**Reference agreement:** 143 synthetic cases, 10,322 training steps, and 2,210 queries × three search strategies. Both benchmark datasets also agree on every training/frozen assignment and template/count across all three parsers. Self-verification, not independent review or universal parity. [Tests and scope →](bench/README.md)
 
-## Bounds reference
+## Watch it work
 
-`MaxClusters`, `MaxLineBytes`, and `MaxTokens` default to zero, which means unlimited. Configure them when inputs are untrusted.
+### Learn in order
 
-A bound failure returns `ErrClusterLimit`, `ErrLineLimit`, or `ErrTokenLimit` without changing learned state. IDs are not consumed. Existing clusters can still learn when the cluster cap is full. No cluster is silently evicted, and no line or token list is silently truncated.
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/sematext/drain3-go/master/docs/assets/learn.png">
+  <img src="docs/assets/learn.gif" alt="Train alice, bob, then carol: cluster 1 generalizes to user wildcard signed in, and its count increases to three.">
+</picture>
 
-`MaxLineBytes` applies to the original line and each completed masking or delimiter stage. Mask replacements that exceed the limit fail. `MaxTokens` rejects an over-limit line before allocating its token slice. These are data-size bounds, not a process RSS limit. Regex capture expansion, runtime overhead, caller-owned input buffers, preprocessing, and concurrent calls can require additional memory.
+### Freeze, then match without mutation
 
-## Compatibility reference
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/sematext/drain3-go/master/docs/assets/freeze.png">
+  <img src="docs/assets/freeze.gif" alt="Freeze permanently publishes a read-only matcher sharing the tree. Concurrent matches keep cluster 1's template and count three unchanged; further training returns ErrFrozen.">
+</picture>
 
-The baseline is Rust commit `9d5e8e8cad620bc2b83064e8c67e29affccf571c`. [The semantic map](docs/semantics.md) records matching and tie-breaking rules.
+Animations play once and stop. **Static:** [learn](docs/assets/learn.png) · [freeze](docs/assets/freeze.png). Made with tldraw; [editable drawings and renderer](docs/visuals/README.md).
 
-Deliberate differences and limitations are:
-
-- Rust's optional cluster cap uses LRU eviction. This API returns an explicit error instead.
-- Regex patterns and capture expansion use Go `regexp`, not Rust `regex`. In particular, Go `\d`, `\w`, and `\s` are ASCII classes. Use portable explicit Unicode classes when required. Regex syntax is not translated.
-- Numeric classification and whitespace use Go's Unicode tables. Unicode versions can differ from the Rust compiler's tables.
-- Sequential masks preserve upstream parameter-span behavior. If masks reuse marker prefixes or suffixes, `Parse` can return overlapping original values from more than one rule. For example, masking numbers to `<N>` and then `<N>:<N>` to `<PAIR>` can report the two number values as well as the pair value.
-- Rust snapshot loading, persistence, LRU state, and token interning are not ported. JSON configuration tags do not imply snapshot compatibility.
-- The library operates on Go strings. The Rust reference accepts UTF-8 strings only.
-
-## Verification
-
-Verification is self-verification, not an independent review.
+## Use it
 
 ```sh
-go test -race ./...
-go vet ./...
+go get github.com/sematext/drain3-go
 ```
 
-The checked-in Rust golden fixtures cover 143 synthetic cases, 10,322 ordered training steps, and 2,210 queries across all three search strategies. They compare assignments, IDs, counts, template changes, final templates, matches, and original parameter extraction. Unit and fuzz tests cover bounds, ownership, and freeze concurrency.
+Import as `drain3 "github.com/sematext/drain3-go"`. `Train` learns in caller-defined order; `Freeze` permanently ends training; `Match` is read-only and concurrent-safe. [Runnable example](example_test.go) · [API and bounds](docs/api.md)
 
-[Reproduce the Rust comparison](bench/README.md). Only synthetic fixtures belong in this repository. Keep customer inputs, templates, and private benchmark artifacts outside it.
+## Know the edges
 
-## License
+- **Rust-compatible matching defaults:** exact ties prefer **more wildcards**, which can merge useful distinctions. This is not Kloudmate's specificity preference. [Matching rules](docs/semantics.md)
+- **Bounds default to unlimited.** Set `MaxClusters`, `MaxLineBytes`, and `MaxTokens` for untrusted input. Failures return errors, not silent eviction/truncation. These are **not an RSS cap**; caller buffering and concurrency still matter.
+- Go regex syntax/ASCII `\d`, `\w`, `\s` and Unicode tables can differ from Rust. Sequential masks can produce overlapping parameter spans. [Compatibility details](docs/api.md#compatibility)
+- No LRU eviction, persistence, snapshot compatibility, or token interner.
 
-Apache-2.0. [Provenance](PROVENANCE.md), [NOTICE](NOTICE), and [third-party notices](third_party) preserve upstream attribution.
+Apache-2.0. Port of [Akshat Agarwal's pinned Rust implementation](https://github.com/akshatagarwl/drain3/tree/9d5e8e8cad620bc2b83064e8c67e29affccf571c). [LICENSE](LICENSE) · [NOTICE](NOTICE) · [Provenance / upstream attribution](PROVENANCE.md) · [Third-party notices](third_party)

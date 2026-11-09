@@ -1,0 +1,641 @@
+{
+  "sourceCommit": "58f9748dc370dfb80706cae0e13a08ca0acf35e3",
+  "sourceFilesSha256": {
+    "bench/go/go.mod": "92b4ee6486ea4a8c5e8c60c4683313d1ecfc2a5f3ae9e03ce055c37f1fd8253b",
+    "bench/go/go.sum": "22055361f68f10d8a3c83723c261633ac215e42240871bfd61178d8d27478875",
+    "bench/go/main.go": "9952c3b0316a22a18dc36c432bf948754d112dea5e2b06ba9a28cbad58a33135",
+    "bench/run.py": "2ae3fcec864d106a75c2dc1fd3917fc5268b64dc3478deb61cb055d5f330210f",
+    "bench/rust/Cargo.lock": "75e590ce6f4b6643df2debe201975544f825527d5a925c727e5d9c8fb04f51cd",
+    "bench/rust/Cargo.toml": "97f350a5ca1ca4c56990f130706ea9e54c178b2f22b44c6176c5d69c2a68c5fb",
+    "bench/rust/src/benchmark.rs": "b53e447f8cb38269fa35068f567d7bc5188a02022546c4d85410a68856f45b51",
+    "bench/rust/src/main.rs": "1823b92e0be969345774f24b47d03bce310d8298897d85ab512dec3210fc183b",
+    "config.go": "86c6bbb2ceb8ddb7fe44dfcdcf3aae7b7c7210b08014d0f4a54e69bc33ddcd9f",
+    "drain.go": "9974e5e86ef28a4c569e45c274d89780a730006f4b606111cbcaa2d2b66e354b",
+    "drain_test.go": "18f64a5b81b34abc43144a14f02cea552aba8d3f406e61588c57f6eb218084a9",
+    "example_test.go": "8d282f1135e3ed563a64e4c7da0f340e97849743b20dd9e2f6489281fb7c3911",
+    "fuzz_test.go": "caa1ad88f8e9765724351b3c32ee095931f27236b65ae92fff0555ee5eef4254",
+    "go.mod": "7a779be0431e414700365dace2089e7dd22b8e630e3275248ec512f81784ac0a",
+    "golden_test.go": "9cfe0ceef9043ea4fe202a886015a3d3d072249bf7247c2213f3b5dc30ae9b77",
+    "internal/trace/main.go": "f3c6f578d67238c9b05d35e98bbfc02664af2b49e087e1940990a4072073dddf",
+    "prepare.go": "2cfea724bf74720a3a5ec30b77ce60b91bae30a0cf78c2a23c375f9feb8e7466",
+    "prepare_test.go": "05d54078569293d98956c9e2a205ea9e9d4e405804b7d863898dd829874f0b95"
+  },
+  "provenance": "Workers rebuilt from a standalone clean clone, not a linked worktree. Rust built --release --locked from the same clone. Go embedded VCS revision matches sourceCommit with modified=false.",
+  "scope": "Synthetic inputs only. Native streaming I/O plus parser, not preprocessing or service memory/concurrency safety. Self-verification.",
+  "datasets": {
+    "short": {
+      "metadata": {
+        "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "goBuild": "go-bench: go1.25.11\n\tpath\tgithub.com/sematext/drain3-go/bench\n\tmod\tgithub.com/sematext/drain3-go/bench\t(devel)\t\n\tdep\tgithub.com/dlclark/regexp2\tv1.11.5\th1:Q/sSnsKerHeCkc/jSTNq1oCm7KiVgUMZRDUoRu0JQZQ=\n\tdep\tgithub.com/kloudmate/drain3\tv0.0.0-20260304082619-bc42b50af108\th1:e6Ixkd2ARfaPcmIt/iCSuMxWDwAsoYNcIpuVYPqO/+Y=\n\tdep\tgithub.com/sematext/drain3-go\tv0.0.0\n\t=>\t../..\t(devel)\t\n\t\n\tdep\tgopkg.in/yaml.v3\tv3.0.1\th1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tGOARM64=v8.0\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=58f9748dc370dfb80706cae0e13a08ca0acf35e3\n\tbuild\tvcs.time=2026-11-09T19:53:38Z\n\tbuild\tvcs.modified=false",
+        "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "sourceHead": "58f9748dc370dfb80706cae0e13a08ca0acf35e3",
+        "inputSha256": "a67f7f796b9eca74180dc5c9bd928b2ace690546234d113f2d231ae100e9ef6b",
+        "inputBytes": 4490267,
+        "goBinarySha256": "b36a2f2f10183b6274878a8c8cd7832c04dee0660c06a953ea6e36786a2ed16a",
+        "rustBinarySha256": "3cd6b89e5eaf1ca5596a20565abaa31ecc43f2789c1e279e085ffb5906cb9387",
+        "settings": {
+          "depth": 4,
+          "similarityThreshold": 0.4,
+          "maxChildren": 100,
+          "maxClusters": 0,
+          "parametrizeNumericTokens": false,
+          "masks": [],
+          "matchStrategy": "never",
+          "goMaxProcs": 2
+        },
+        "runs": 5,
+        "scope": "native streaming I/O plus parser; no retained preprocessing buffers or process memory cap"
+      },
+      "verification": {
+        "go": {
+          "differentFields": [],
+          "trainingAssignmentDifferences": 0,
+          "frozenAssignmentDifferences": 0
+        },
+        "kloudmate": {
+          "differentFields": [],
+          "trainingAssignmentDifferences": 0,
+          "frozenAssignmentDifferences": 0
+        },
+        "rust": {
+          "differentFields": [],
+          "trainingAssignmentDifferences": 0,
+          "frozenAssignmentDifferences": 0
+        }
+      },
+      "runs": [
+        {
+          "parser": "go",
+          "wallNs": 57693583,
+          "rssBytes": 11698176,
+          "rows": 80000,
+          "trainNs": 24870708,
+          "matchNs": 21588167,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 0
+        },
+        {
+          "parser": "rust",
+          "wallNs": 48621166,
+          "rssBytes": 3571712,
+          "rows": 80000,
+          "trainNs": 16061166,
+          "matchNs": 12505500,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 0
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 60589833,
+          "rssBytes": 11632640,
+          "rows": 80000,
+          "trainNs": 27035709,
+          "matchNs": 22523042,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 0
+        },
+        {
+          "parser": "go",
+          "wallNs": 65346333,
+          "rssBytes": 11665408,
+          "rows": 80000,
+          "trainNs": 25038208,
+          "matchNs": 21008542,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 1
+        },
+        {
+          "parser": "rust",
+          "wallNs": 38714041,
+          "rssBytes": 3571712,
+          "rows": 80000,
+          "trainNs": 15882959,
+          "matchNs": 12473208,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 1
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 61045625,
+          "rssBytes": 11616256,
+          "rows": 80000,
+          "trainNs": 26673708,
+          "matchNs": 22576708,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 1
+        },
+        {
+          "parser": "rust",
+          "wallNs": 38740584,
+          "rssBytes": 3571712,
+          "rows": 80000,
+          "trainNs": 15932625,
+          "matchNs": 12565042,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 2
+        },
+        {
+          "parser": "go",
+          "wallNs": 56517875,
+          "rssBytes": 11681792,
+          "rows": 80000,
+          "trainNs": 24451208,
+          "matchNs": 20958916,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 2
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 59053667,
+          "rssBytes": 11632640,
+          "rows": 80000,
+          "trainNs": 26693333,
+          "matchNs": 22594792,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 2
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 60761583,
+          "rssBytes": 11665408,
+          "rows": 80000,
+          "trainNs": 26579166,
+          "matchNs": 23249958,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 3
+        },
+        {
+          "parser": "go",
+          "wallNs": 58927583,
+          "rssBytes": 11681792,
+          "rows": 80000,
+          "trainNs": 25357084,
+          "matchNs": 22451417,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 3
+        },
+        {
+          "parser": "rust",
+          "wallNs": 37864625,
+          "rssBytes": 3571712,
+          "rows": 80000,
+          "trainNs": 15832917,
+          "matchNs": 12322458,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 3
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 62524416,
+          "rssBytes": 11632640,
+          "rows": 80000,
+          "trainNs": 28566709,
+          "matchNs": 22736291,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 4
+        },
+        {
+          "parser": "go",
+          "wallNs": 57863334,
+          "rssBytes": 11665408,
+          "rows": 80000,
+          "trainNs": 24501833,
+          "matchNs": 20954584,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 4
+        },
+        {
+          "parser": "rust",
+          "wallNs": 38903750,
+          "rssBytes": 3555328,
+          "rows": 80000,
+          "trainNs": 16099000,
+          "matchNs": 12392375,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 4
+        }
+      ],
+      "summary": {
+        "go": {
+          "trainNs": {
+            "median": 24870708,
+            "min": 24451208,
+            "max": 25357084
+          },
+          "matchNs": {
+            "median": 21008542,
+            "min": 20954584,
+            "max": 22451417
+          },
+          "wallNs": {
+            "median": 57863334,
+            "min": 56517875,
+            "max": 65346333
+          },
+          "rssBytes": {
+            "median": 11681792,
+            "min": 11665408,
+            "max": 11698176
+          }
+        },
+        "kloudmate": {
+          "trainNs": {
+            "median": 26693333,
+            "min": 26579166,
+            "max": 28566709
+          },
+          "matchNs": {
+            "median": 22594792,
+            "min": 22523042,
+            "max": 23249958
+          },
+          "wallNs": {
+            "median": 60761583,
+            "min": 59053667,
+            "max": 62524416
+          },
+          "rssBytes": {
+            "median": 11632640,
+            "min": 11616256,
+            "max": 11665408
+          }
+        },
+        "rust": {
+          "trainNs": {
+            "median": 15932625,
+            "min": 15832917,
+            "max": 16099000
+          },
+          "matchNs": {
+            "median": 12473208,
+            "min": 12322458,
+            "max": 12565042
+          },
+          "wallNs": {
+            "median": 38740584,
+            "min": 37864625,
+            "max": 48621166
+          },
+          "rssBytes": {
+            "median": 3571712,
+            "min": 3555328,
+            "max": 3571712
+          }
+        }
+      }
+    },
+    "long": {
+      "metadata": {
+        "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "goBuild": "go-bench: go1.25.11\n\tpath\tgithub.com/sematext/drain3-go/bench\n\tmod\tgithub.com/sematext/drain3-go/bench\t(devel)\t\n\tdep\tgithub.com/dlclark/regexp2\tv1.11.5\th1:Q/sSnsKerHeCkc/jSTNq1oCm7KiVgUMZRDUoRu0JQZQ=\n\tdep\tgithub.com/kloudmate/drain3\tv0.0.0-20260304082619-bc42b50af108\th1:e6Ixkd2ARfaPcmIt/iCSuMxWDwAsoYNcIpuVYPqO/+Y=\n\tdep\tgithub.com/sematext/drain3-go\tv0.0.0\n\t=>\t../..\t(devel)\t\n\t\n\tdep\tgopkg.in/yaml.v3\tv3.0.1\th1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tGOARM64=v8.0\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=58f9748dc370dfb80706cae0e13a08ca0acf35e3\n\tbuild\tvcs.time=2026-11-09T19:53:38Z\n\tbuild\tvcs.modified=false",
+        "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "sourceHead": "58f9748dc370dfb80706cae0e13a08ca0acf35e3",
+        "inputSha256": "466b004a2fec9ee2b00adc5de9f11b1df6afe7ed9b7e4be550cc0dadd306caf3",
+        "inputBytes": 164480000,
+        "goBinarySha256": "b36a2f2f10183b6274878a8c8cd7832c04dee0660c06a953ea6e36786a2ed16a",
+        "rustBinarySha256": "3cd6b89e5eaf1ca5596a20565abaa31ecc43f2789c1e279e085ffb5906cb9387",
+        "settings": {
+          "depth": 4,
+          "similarityThreshold": 0.4,
+          "maxChildren": 100,
+          "maxClusters": 0,
+          "parametrizeNumericTokens": false,
+          "masks": [],
+          "matchStrategy": "never",
+          "goMaxProcs": 2
+        },
+        "runs": 5,
+        "scope": "native streaming I/O plus parser; no retained preprocessing buffers or process memory cap"
+      },
+      "verification": {
+        "go": {
+          "differentFields": [],
+          "trainingAssignmentDifferences": 0,
+          "frozenAssignmentDifferences": 0
+        },
+        "kloudmate": {
+          "differentFields": [],
+          "trainingAssignmentDifferences": 0,
+          "frozenAssignmentDifferences": 0
+        },
+        "rust": {
+          "differentFields": [],
+          "trainingAssignmentDifferences": 0,
+          "frozenAssignmentDifferences": 0
+        }
+      },
+      "runs": [
+        {
+          "parser": "go",
+          "wallNs": 809776708,
+          "rssBytes": 11829248,
+          "rows": 80000,
+          "trainNs": 400526583,
+          "matchNs": 396709375,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 0
+        },
+        {
+          "parser": "rust",
+          "wallNs": 191365667,
+          "rssBytes": 3620864,
+          "rows": 80000,
+          "trainNs": 94173125,
+          "matchNs": 86026292,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 0
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 612441583,
+          "rssBytes": 11730944,
+          "rows": 80000,
+          "trainNs": 307456333,
+          "matchNs": 292391667,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 0
+        },
+        {
+          "parser": "go",
+          "wallNs": 836351292,
+          "rssBytes": 11780096,
+          "rows": 80000,
+          "trainNs": 410090542,
+          "matchNs": 412693458,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 1
+        },
+        {
+          "parser": "rust",
+          "wallNs": 202700125,
+          "rssBytes": 3604480,
+          "rows": 80000,
+          "trainNs": 98700375,
+          "matchNs": 91353250,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 1
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 642092417,
+          "rssBytes": 11698176,
+          "rows": 80000,
+          "trainNs": 325881875,
+          "matchNs": 299799917,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 1
+        },
+        {
+          "parser": "rust",
+          "wallNs": 190448000,
+          "rssBytes": 3588096,
+          "rows": 80000,
+          "trainNs": 84706041,
+          "matchNs": 94516541,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 2
+        },
+        {
+          "parser": "go",
+          "wallNs": 838712458,
+          "rssBytes": 11780096,
+          "rows": 80000,
+          "trainNs": 408284083,
+          "matchNs": 418019208,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 2
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 612392500,
+          "rssBytes": 11681792,
+          "rows": 80000,
+          "trainNs": 300734417,
+          "matchNs": 300590250,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 2
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 636196875,
+          "rssBytes": 11714560,
+          "rows": 80000,
+          "trainNs": 304367292,
+          "matchNs": 317050625,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 3
+        },
+        {
+          "parser": "go",
+          "wallNs": 809656375,
+          "rssBytes": 11632640,
+          "rows": 80000,
+          "trainNs": 405980666,
+          "matchNs": 390736083,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 3
+        },
+        {
+          "parser": "rust",
+          "wallNs": 185318209,
+          "rssBytes": 3604480,
+          "rows": 80000,
+          "trainNs": 89318375,
+          "matchNs": 84874958,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 3
+        },
+        {
+          "parser": "kloudmate",
+          "wallNs": 632044083,
+          "rssBytes": 16564224,
+          "rows": 80000,
+          "trainNs": 294255792,
+          "matchNs": 327793625,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 4
+        },
+        {
+          "parser": "go",
+          "wallNs": 822488708,
+          "rssBytes": 11911168,
+          "rows": 80000,
+          "trainNs": 423711625,
+          "matchNs": 386069958,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 4
+        },
+        {
+          "parser": "rust",
+          "wallNs": 176273667,
+          "rssBytes": 3588096,
+          "rows": 80000,
+          "trainNs": 83896916,
+          "matchNs": 83074708,
+          "trainDigest": 15234430984389366753,
+          "matchDigest": 15234430984389366753,
+          "unmatched": 0,
+          "clusterCount": 186,
+          "run": 4
+        }
+      ],
+      "summary": {
+        "go": {
+          "trainNs": {
+            "median": 408284083,
+            "min": 400526583,
+            "max": 423711625
+          },
+          "matchNs": {
+            "median": 396709375,
+            "min": 386069958,
+            "max": 418019208
+          },
+          "wallNs": {
+            "median": 822488708,
+            "min": 809656375,
+            "max": 838712458
+          },
+          "rssBytes": {
+            "median": 11780096,
+            "min": 11632640,
+            "max": 11911168
+          }
+        },
+        "kloudmate": {
+          "trainNs": {
+            "median": 304367292,
+            "min": 294255792,
+            "max": 325881875
+          },
+          "matchNs": {
+            "median": 300590250,
+            "min": 292391667,
+            "max": 327793625
+          },
+          "wallNs": {
+            "median": 632044083,
+            "min": 612392500,
+            "max": 642092417
+          },
+          "rssBytes": {
+            "median": 11714560,
+            "min": 11681792,
+            "max": 16564224
+          }
+        },
+        "rust": {
+          "trainNs": {
+            "median": 89318375,
+            "min": 83896916,
+            "max": 98700375
+          },
+          "matchNs": {
+            "median": 86026292,
+            "min": 83074708,
+            "max": 94516541
+          },
+          "wallNs": {
+            "median": 190448000,
+            "min": 176273667,
+            "max": 202700125
+          },
+          "rssBytes": {
+            "median": 3604480,
+            "min": 3588096,
+            "max": 3620864
+          }
+        }
+      }
+    }
+  }
+}
