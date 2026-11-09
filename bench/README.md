@@ -20,6 +20,30 @@ The command compares all training steps, final clusters, exact matches, and extr
 
 To regenerate the checked-in expectations after a deliberate reference change, add `--write-golden testdata/rust-golden.jsonl`. Expectations come from Rust, not from the Go implementation. Update the pinned revision and tests together when changing references.
 
+## Compare streaming latency and peak RSS
+
+Build the separate Go comparison module with Go 1.25.11:
+
+```sh
+(cd bench/go && GOTOOLCHAIN=go1.25.11 go build -o /tmp/drain3-go-check/go-bench .)
+python3 bench/run.py \
+	--go /tmp/drain3-go-check/go-bench \
+	--rust /tmp/drain3-go-check/rust-target/release/drain3-go-reference \
+	--out /tmp/drain3-go-synthetic-results --runs 5
+```
+
+The default input has 80,000 synthetic records. Existing output directories must be empty. The output directory must be outside this repository. Raw verification traces contain templates, so treat outputs from private input as private.
+
+Each subprocess streams the same ordered input twice, once for training and once for exact tree matching. It retains learned state, not input lines. Records contain a little-endian uint32 partition, a little-endian uint32 UTF-8 byte length, and message bytes. A record cannot exceed 1 MiB. Use `--input` to compare an already prepared frame file. The tools do not normalize or sort existing input.
+
+All implementations use depth 4, similarity threshold 0.4, 100 children, unlimited clusters, no additional masks, and exact tree-only matching. Numeric-token routing defaults to false for this comparison and can be enabled for all implementations with `--numeric`. Kloudmate is pinned to `bc42b50af108a7a7ce926a1534d78c9cf9373eed`. Its own masking wrapper is not used.
+
+The verification pass records every training and final-match assignment, template, and count. Go must equal Rust. Kloudmate differences are recorded separately because its tie-breaking policy differs. Every measured run must reproduce its own verification digests and counts.
+
+The runner warms each implementation with a verification pass, then randomizes implementation order for each measured round with seed 27846. It retains raw subprocess output, `/usr/bin/time` peak RSS, input and executable hashes, settings, compiler metadata, and median and range summaries. `GOMAXPROCS=2` applies to the Go workers. Native execution does not impose a CPU affinity or process memory limit.
+
+Timing includes buffered file reads and framing. It excludes shared preprocessing, sorting, and input retention. Peak RSS includes the worker runtime, I/O buffers, parser state, and result serialization. These measurements do not establish a service's worst-case memory or concurrency safety.
+
 ## Scope
 
 Parity is self-verification. It is not an independent review or proof for every input. It excludes Rust LRU eviction, persistence, Unicode-version differences, and regex constructs without equivalent Go semantics. Those differences are listed in the root README.

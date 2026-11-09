@@ -1,3 +1,5 @@
+mod benchmark;
+
 use drain3::{Change, Config, Drain, Search};
 use serde::{Deserialize, Serialize};
 use std::io::{self, BufRead, Write};
@@ -85,6 +87,9 @@ fn run(req: Request) -> Result<Response, Box<dyn std::error::Error>> {
     Ok(out)
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    if std::env::args().nth(1).as_deref() == Some("bench") {
+        return benchmark::run();
+    }
     let stdin = io::stdin();
     let mut out = io::BufWriter::new(io::stdout().lock());
     for line in stdin.lock().lines() {

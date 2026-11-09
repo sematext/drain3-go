@@ -20,4 +20,6 @@ The shipped Go library imports only the Go standard library. No Rust crate sourc
 
 The Rust implementation depends on `regex`, `rustc-hash`, and `smallvec`, with optional `serde`. Those crates are used by the reference executable, not translated into the Go library. Their source licenses remain in the Cargo registry or Git checkout. This repository does not distribute compiled reference executables.
 
+The separate Go benchmark module depends on MIT-licensed `github.com/kloudmate/drain3` at `bc42b50af108a7a7ce926a1534d78c9cf9373eed`. It calls that library as a comparator and does not copy its implementation. Its notice is retained in `third_party/kloudmate-drain3-LICENSE.txt`.
+
 This inventory records source origin and retained notices. It is not a legal opinion about every downstream distribution.
