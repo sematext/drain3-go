@@ -56,6 +56,11 @@ type Config struct {
 	ParamString              string               `json:"param_str"`
 	ParametrizeNumericTokens bool                 `json:"parametrize_numeric_tokens"`
 	Masking                  []MaskingInstruction `json:"masking"`
+	// ReuseExactTemplates lets an exact routed template match bypass the
+	// similarity threshold. Enable for heavily pre-normalized input to avoid
+	// spending the cluster budget on repeated parameter-heavy templates.
+	// False preserves upstream training semantics.
+	ReuseExactTemplates bool `json:"reuse_exact_templates,omitempty"`
 }
 
 // DefaultConfig matches the Rust upstream's unlimited training defaults.

@@ -141,7 +141,10 @@ func (m *Miner) Train(line string) (Trained, error) {
 			if len(tokens) > 0 {
 				similarity = float64(matches) / float64(len(tokens))
 			}
-			if similarity < s.cfg.SimilarityThreshold {
+			// An exact template match must remain reusable even when most
+			// tokens are parameters. Otherwise repeated normalized lines can
+			// consume the entire cluster budget with identical templates.
+			if similarity < s.cfg.SimilarityThreshold && !(s.cfg.ReuseExactTemplates && matches+c.params == len(tokens)) {
 				continue
 			}
 			if matches > bestScore || matches == bestScore && best != nil && c.params > best.params {
